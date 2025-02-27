@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "Practice_Database",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"opengauss",
+			"Superkey"
+		]
+	}
+}
