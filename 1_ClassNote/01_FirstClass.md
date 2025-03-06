@@ -164,6 +164,8 @@ Application developers pay most attention to the view level
 
 ## 3. Chapter 2 : Relational Database
 
+续[Relational Database](../1_ClassNote/02_SecondClass.md#chapter-2--relational-database)
+
 ### 3.1. Relation(关系)
 
 1. Relation
