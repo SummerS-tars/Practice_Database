@@ -191,14 +191,43 @@ Application developers pay most attention to the view level
 
 ### 3.3. key(键)
 
-1. Superkey(超键)  
+The concept comes from the demand:  
+We need to have a way to specify how tuples within a given relation are distinguished  
+
+1. superkey(超键)  
     - Set of attributes
-    - Values for which are sufficient to identify a unique tuple of each relation r(R)  
-2. Candidate key(候选键)
-    - Superkey  
-    - Minimal(最小)  
-3. Primary key(主键)
-4. Foreign key(外键)
+    - Values for which are sufficient to identify a **unique** tuple of each relation r(R)  
+2. candidate key(候选键)  
+    - one of superkeys  
+    - **Minimal**(最小) superkey  
+    a relation may have more than one candidate key  
+    they must have no common attributes  
+3. Primary key(主键) (also as primary key constraints)  
+    - one of candidate keys  
+    - **chosen** by designer as the principal means of identifying tuple within a relation  
+    we usually use underline to denote the primary key in relation schema  
+4. Foreign key(外键)  
+    - attribute set, for example `A`  
+    - `A` for each tuple in `r1` must also have the same value of **primary-key `B`** for some tuple in `r2`  
+    - `A` --> a foreign key **from `r1`**, **referencing `r2`**  
+        - `r1` referencing relation  
+        - `r2` referenced relation  
+    - **Attention:**  
+        - `B` must be the primary key of `r2`  
+        - **referential integrity constraint**: all the value of `A` must could be found in `B`  
+
+*note:*  
+
+Generally, we use several signs to denote some concepts in the database:  
+
+1. `r` --> relation  
+2. `R` --> set of attributes in the schema of `r`  
+3. `t` --> tuple  
+    1. `t(R) or t.R` --> attributes of `R` in tuple `t`  
+4. `K` --> subset of `R`  
+
+**Attention:**  
+Primary key must be chosen with care  
 
 ## 4. Honor Class 1 : 初识数据库系统（以Oracle为例）
 

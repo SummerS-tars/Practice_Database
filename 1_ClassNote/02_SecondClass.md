@@ -1,4 +1,4 @@
-# Week 2
+# Week 2 : Relational Model
 
 - [1. Chapter 2 : Relational Database](#1-chapter-2--relational-database)
     - [1.1. Structure of Relational Database](#11-structure-of-relational-database)
@@ -32,6 +32,9 @@ Like a class and an object in OOP
 
 可见实体书Chap6  
 PPT lecture 2  
+
+English Ver  
+
 
 **Basic Operators:**  
 
