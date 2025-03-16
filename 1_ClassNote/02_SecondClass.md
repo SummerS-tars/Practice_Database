@@ -50,9 +50,25 @@ return a new relation as result
 2. Projection(投影) : $\Pi$
     $$\Pi_{id, salary}(\sigma_{salary \geq 85000}({Instructor}))$$
 3. Union(并) : $\cup$  
-4. Difference(差) : $-$  
-5. Cartesian Product(笛卡尔积) : $\times$  
-6. Rename(重命名) : $\rho$  
+    $$\Pi_{course_id}(\sigma_{semester=\text{"Fall"}∧year=2017}(section))\cup\\\Pi_{course_id}(\sigma_{semester=\text{"Spring"}∧year=2018}(section))$$
+    conditions(**compatible relations**) to make sense:  
+    1. input relations have the same number of attributes(arity)  
+    2. when the attributes have associated types, the types the attributes in the position must be the same  
+4. intersection(交) : $\cap$  
+    $$\Pi_{course_id}(\sigma_{semester=\text{"Fall"}∧year=2017}(section))\cap\\\Pi_{course_id}(\sigma_{semester=\text{"Spring"}∧year=2018}(section))$$  
+    also the relations being intersected should be **compatible relations**  
+5. Set-Difference(差) : $-$  
+    $$\Pi_{course_id}(\sigma_{semester=\text{"Fall"}∧year=2017}(section)) -\\\Pi_{course_id}(\sigma_{semester=\text{"Spring"}∧year=2018}(section))$$
+    find tuples only in one but not in another  
+6. Cartesian Product(笛卡尔积) : $\times$  
+    $$r_1 \times r_2$$  
+    join every tuple in one relation with every tuple in another relation as one tuple in the result  
+    usually combined with selection, projection and renaming operations  
+7. Rename(重命名) : $\rho$  
+    $$\rho_x(E)$$  
+    1. `E` is an expression  
+    2. `x` is a new name for `E`
+    rename the relation and its attributes
 
 **Additional Operators:**  
 
@@ -62,6 +78,8 @@ return a new relation as result
 4. Division(除) : $\div$  
 5. Assignment(赋值) : $\leftarrow$  
     *相当于将关系运算结果存储在一个临时变量之中*  
+    very useful to express complex queries  
+    $$courses\_fall\_2017 \leftarrow \Pi_{course_id}(\sigma_{semester=\text{"Fall"}∧year=2017}(section))\\courses\_spring\_2018 \leftarrow \Pi_{course_id}(\sigma_{semester=\text{"Spring"}∧year=2018}(section))\\courses\_fall\_2017 \cup courses\_spring\_2018$$
 
 **Extended Operations:**  
 

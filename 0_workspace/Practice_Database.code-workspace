@@ -9,6 +9,7 @@
 		"cSpell.words": [
 			"opengauss",
 			"Superkey"
-		]
+		],
+		"markdown.validate.enabled": true
 	}
 }
