@@ -34,14 +34,21 @@ Like a class and an object in OOP
 PPT lecture 2  
 
 English Ver  
+Chapter 2.6 in P48  
 
+**Contents:**  
+consists a set of operations  
+take one or two relations as input  
+return a new relation as result  
 
 **Basic Operators:**  
 
 1. Selection(选择) : $\sigma$  
-    $$\sigma_{salary \geq 85000}(\text{Instructor})$$
+    $$\sigma_{salary \geq 85000}({Instructor})$$
+    - *note:* we can use `AND`, `OR`, `NOT` to combine the conditions  
+        in math expression, we use `∧`, `∨`, `¬`  
 2. Projection(投影) : $\Pi$
-    $$\Pi_{id, salary}(\sigma_{salary \geq 85000}(\text{Instructor}))$$
+    $$\Pi_{id, salary}(\sigma_{salary \geq 85000}({Instructor}))$$
 3. Union(并) : $\cup$  
 4. Difference(差) : $-$  
 5. Cartesian Product(笛卡尔积) : $\times$  
