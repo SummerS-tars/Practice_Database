@@ -108,4 +108,19 @@ $$
 ### 5.4. `d`
 
 select ID, name  
-from student, 
+from student, takes  
+where year = 2018  
+
+$$
+\Pi_{ID,name}(student \bowtie_{student.ID = takes.ID}(\sigma_{year = 2018}(takes)))
+$$
+
+### 5.5. `e`
+
+select ID, name
+from student, takes  
+where not year = 2018  
+
+$$
+\Pi_{ID,name}(student \bowtie_{student.ID = takes.ID}(\Pi_{ID}(takes)-\Pi_{ID}(\sigma_{year = 2018}(takes))))
+$$
