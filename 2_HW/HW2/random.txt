@@ -1,0 +1,71 @@
+# 4.1 A
+find: customer  
+how:  
+
+1. has an account  
+    1. account at **every**  branch in "Brooklyn"  
+
+in based on the relational algebra calculation "divide"  
+
+```mermaid
+flowchart TD
+A[branch **branch_city**]
+B[account]
+D[depositor]-->|account_number|B
+B-->|branch_name|A
+```
+
+```sql
+WITH brooklyn_branches AS 
+    (SELECT branch_name
+    FROM branch
+    WHERE branch_city = 'Brooklyn')
+SELECT DISTINCT ID
+FROM depositor AS d
+WHERE NOT EXISTS        -- 对每个d的元组的子查询，检查是否有返回的元组，如果有（说明bb的某个元组不再d的对应的account中）则返回false，该d的元组不计入
+    (SELECT *
+    FROM brooklyn_branches AS bb
+    WHERE NOT EXISTS        -- 检查bb的每个元组是否再d的某个元组的对应的account中，没有则返回true，计入返回元组中
+        (SELECT *
+        FROM account AS a
+        WHERE a.account_number = d.account_number
+        AND a.branch_name = bb.branch_name))
+```
+
+1. consider each tuple d in depositor  
+    1. consider each tuple bb in brooklyn_branches  
+        check whether there is a tuple a in account  
+        1. a belongs to d  
+        2. a belongs to bb  
+
+
+# 4.2 C
+what: section and ID,name of each instructor teaching it  
+which:  
+
+1. in Sprint 2018  
+
+how:  
+
+1. multi instructors teach a section, the section can be duplicated  
+2. no instructor, section also appear with instructor name "-"  
+
+```mermaid
+flowchart TD
+A[section **year, semester**]
+B[teaches]
+C[instructor]
+A-->|left join|B
+B-->|join|C
+```
+
+```sql
+SELECT s.*, COALESCE(ID, "-") AS instructor_ID, COALESCE(name, "-") AS instructor_name
+FROM (SELECT *
+    FROM section
+    WHERE semester = "Spring" AND year = 2018) AS s 
+    LEFT OUTER JOIN teaches
+    LEFT OUTER JOIN (SELECT ID, name FROM instructor)
+```
+
+注意：使用`COALESCE`函数来处理可能为NULL的情况，当没有教师时，将教师ID和名字替换为"-"  
