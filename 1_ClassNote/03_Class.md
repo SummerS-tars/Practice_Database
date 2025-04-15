@@ -546,7 +546,35 @@ some can add **from** $dual$ to the query
 ### Modification of the Database
 
 - **delete**  
+
+    ```sql
+    DELETE FROM table_name
+    WHERE condition;
+    ```
+
 - **insert**  
+
+    ```sql
+    INSERT INTO table_name (column1, column2, ...)
+    VALUES (value1, value2, ...);
+    ```
+
+    we can insert multiple tuples at once  
+    ands we can also insert tuples from another relation  
+
+    ```sql
+    INSERT INTO table_name (column1, column2, ...)
+    SELECT value1, value2, ...
+    FROM another_table_name
+    WHERE condition;
+    ```
+
 - **update**  
+
+    ```sql
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+    ```
 
 saw in [next note](04_Class.md)  

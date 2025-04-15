@@ -43,8 +43,26 @@
     - [6.2. Roles](#62-roles)
 - [7. *Advanced SQL*](#7-advanced-sql)
     - [7.1. Access SQL From a Programming Language](#71-access-sql-from-a-programming-language)
+        - [JDBC](#jdbc)
+            - [Connecting to a Database](#connecting-to-a-database)
+            - [Send SQL Statements to Database System](#send-sql-statements-to-database-system)
+            - [Exceptions and Resource Management](#exceptions-and-resource-management)
+            - [Retrieving the Result of a Query](#retrieving-the-result-of-a-query)
+            - [Prepared Statements](#prepared-statements)
+            - [Callable Statements](#callable-statements)
+            - [Metadata Features](#metadata-features)
+            - [Other Features](#other-features)
+        - [ODBC](#odbc)
+        - [Embedded SQL](#embedded-sql)
     - [7.2. Functions and Procedural Constructs](#72-functions-and-procedural-constructs)
+        - [Declaring and Invoking](#declaring-and-invoking)
+            - [Function](#function)
+            - [Procedure](#procedure)
+        - [Language Constructors for Procedures and Functions](#language-constructors-for-procedures-and-functions)
     - [7.3. Triggers](#73-triggers)
+        - [Event](#event)
+        - [Actions](#actions)
+        - [Disable or Drop Triggers](#disable-or-drop-triggers)
 
 ---
 
@@ -420,6 +438,252 @@ to revoke privileges from user/role
 
 ### 7.1. Access SQL From a Programming Language
 
+To approached to access SQL from a general-purpose programming language  
+
+1. **Dynamic SQL**  
+    - use a string to represent the SQL statement  
+    - use a function/method to execute the SQL statement
+  
+    example:  
+    - JDBC  
+    - ODBC
+2. **Embeded SQL**  
+    - use a special syntax to represent the SQL statement  
+    - use a preprocessor to convert the SQL statement into a string
+
+#### JDBC
+
+**JDBC** standard defines **Application Program Interface(API)**  
+about Java programs can use to connect to database servers  
+
+JDBC: Java Database Connectivity  
+
+##### Connecting to a Database
+
+for java, use `java.sql.*`  
+
+`getConnection()`  
+and specify:  
+
+1. direction  
+    1. URL or machine name  
+    2. port
+    3. protocol to connect to the database  
+    4. select database  
+2. user  
+3. password  
+
+##### Send SQL Statements to Database System
+
+use **Statement**  
+details are not listed here  
+
+##### Exceptions and Resource Management
+
+*try-catch* is very important in handling exceptions here  
+
+and we should pay attention to resource management:  
+when we connect to a database  
+we are consuming the resources of the database server  
+
+we should make sure that our programs correctly release the resources  
+when we are done with them  
+*try-with-resources* construct is recommended here  
+
+##### Retrieving the Result of a Query
+
+`next()` method of **ResultSet** class  
+is usually used here  
+
+it checks whether there is a next row in the result set  
+and if so, fetches it  
+
+##### Prepared Statements
+
+After knowing how to send SQL statements to the database system  
+then how we construct a SQL statement?  
+*here we should pay attention that all we send to database system in JDBC is just the string of the SQL statements*  
+
+No matter what we want to do  
+the real thing we do basically is concatenating strings of the SQL statements  
+however, we should be careful about this  
+which may get SQL injection attacks  
+
+It is recommended to use **PreparedStatement**  
+we use `?` as placeholders in the SQL statement  
+and then use `setXXX()` methods to set the values of the placeholders  
+
+##### Callable Statements
+
+##### Metadata Features
+
+##### Other Features
+
+#### ODBC
+
+#### Embedded SQL
+
 ### 7.2. Functions and Procedural Constructs
 
+In this section, we show how we can write our own functions and procedures  
+and store them in the database  
+and invoke them from SQL statements  
+
+in fact, these can be done by programming-language procedures stored entirely outside the database  
+why we need these?  
+
+For defining them as stored procedures in the database  
+it allows multiple applications to access the procedures  
+*in other word, it give us another way to abstract our applications*  
+
+Another thing we should pay attention to is that  
+many database systems implement nonstandard versions of syntax of SQL functions/procedures use  
+but the basic idea is the same  
+
+#### Declaring and Invoking
+
+##### Function
+
+back to DDL, we can find that a great difference between DDL and common programming language  
+the type is after symbol, not before  
+
+here, when we define functions in SQL  
+there is also a difference in return, it also reverses the order  
+
+besides this, there almost no difference  
+
+e.g.  
+
+```sql
+CREATE FUNCTION function_name (parameter_list)
+RETURNS return_type
+    BEGIN
+    DECLARE variable_list;
+        SELECT ... INTO variable
+        FROM ...
+        WHERE ...
+    RETURN variable;
+    END;
+```
+
+In fact, **table functions** exists  
+which return a table instead of a single value  
+here we should specify every type of the column in the table  
+*detail: input parameters can be access by `function_name.parameter_name`*  
+we can regard it as a version of view  
+which allows parameters  
+
+How to call a function?  
+
+for table function  
+
+```sql
+SELECT *
+FROM TABLE(function_name(parameter_list));
+```
+
+##### Procedure
+
+it differs from function  
+it use `in` and `out` to specify the input and output parameters  
+and other is similar to function  
+
+How to invoke?  
+
+```sql
+DECLARE v_output;
+CALL procedure_nam(v_input, v_output);
+```
+
+#### Language Constructors for Procedures and Functions
+
+Persistent Storage Module(PSM) handles these part  
+witch make SQL almost have the same power as a programming language  
+
+1. **DECLARE**  
+    define a variable  
+2. **SET**  
+    set the value of a variable  
+3. **BEGIN ... END**  
+    `...` can include multiple statements  
+    use **ATOMIC** after `BEGIN` prove that the statements here are executed as a single transaction  
+4. **WHILE**  
+    just like `while` in programming language  
+    end by `END WHILE`  
+5. **REPEAT**  
+    `REPEAT` along with `UNTIL`  
+    end by `END REPEAT`  
+6. **IF-THEN-ELSE**  
+    `IF` along with `THEN`  
+    then with `ELSEIF`  
+    end by `END IF`  
+7. **CASE**  
+
+**exception condition** is also supported  
+not mentioned here  
+
 ### 7.3. Triggers
+
+**Trigger**  
+a statement executed automatically by the database system  
+as a side effect of a modification  
+
+**parts:**  
+
+- **condition**  
+    When to invoke the trigger  
+    can also be broken down to two little parts  
+    1. **event**  
+        what event to invoke the condition check for invoking trigger  
+    2. **executing condition**  
+        the condition to check whether to invoke the trigger  
+- **actions**  
+    What the trigger dose  
+
+#### Event
+
+- **INSERT**  
+- **DELETE**
+- **UPDATE**  
+
+time specification:  
+
+- **AFTER**
+- **BEFORE**  
+
+#### Actions
+
+How to do?  
+we usually do some action for every row influenced by the event  
+by using **FOR EACH ROW**  
+
+for these rows,  
+we can use **NEW** or **OLD** plus **ROW** to access the values of the row  
+and we can use **REFERENCING** before it and specify the name of the row  
+
+e.g.  
+
+```sql
+REFERENCING NEW ROW AS new_row
+```
+
+if we want do a single action for all rows  
+we can use  
+**FOR EACH STATEMENT** to replace **FOR EACH ROW**  
+and using **REFERENCING OLD TABLE AS** or **NEW TABLE AS**  
+to denote the table of the rows  
+*it is called transition table*  
+*transition table cannot be used in **before** triggers*  
+
+#### Disable or Drop Triggers
+
+triggers created as enabled by default  
+we can disable them using  
+**ALTER TRIGGER** *trigger_name* **DISABLE**  
+*not always the same syntax here*  
+
+or we can drop them using  
+**DROP TRIGGER** *trigger_name*  
+
+**We should always pay a lot attention when we create a trigger**  
+**it may cause unlimited trigger train**  
