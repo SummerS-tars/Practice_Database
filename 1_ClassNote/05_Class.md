@@ -4,39 +4,63 @@
 
 - [1. Design Process](#1-design-process)
 - [2. Modeling](#2-modeling)
-    - [2.1. ER Model](#21-er-model)
-    - [2.2. Entity Sets](#22-entity-sets)
-    - [2.3. Attributes](#23-attributes)
-        - [2.3.1. Types](#231-types)
-    - [2.4. Relationship Sets](#24-relationship-sets)
-        - [2.4.1. With Attributes](#241-with-attributes)
-        - [2.4.2. Degree of a Relationship Set](#242-degree-of-a-relationship-set)
+    - [2.1. Entity Sets](#21-entity-sets)
+    - [2.2. Attributes](#22-attributes)
+        - [2.2.1. Types](#221-types)
+    - [2.3. Relationship Sets](#23-relationship-sets)
+        - [2.3.1. With Attributes](#231-with-attributes)
+        - [2.3.2. Degree of a Relationship Set](#232-degree-of-a-relationship-set)
 - [3. Constraints](#3-constraints)
-    - [Keys](#keys)
-    - [Keys of Relationship Sets](#keys-of-relationship-sets)
+    - [3.1. Keys](#31-keys)
+    - [3.2. Keys of Relationship Sets](#32-keys-of-relationship-sets)
 - [4. E-R Diagram](#4-e-r-diagram)
 - [5. Design Issues](#5-design-issues)
 
 ---
 
+This Chapter, we pay attention to Entity-Relationship Model  
+
 ## 1. Design Process
 
+Conceptual-design  
+Logical-design  
+Physical-design  
+
+Choose Design?  
+
+**Entity**  
+
+Get rid of two main drawbacks of the relational model:  
+
+**Redundancy**  
+**Incompleteness**  
 
 ## 2. Modeling
 
-### 2.1. ER Model
+Entity-Relationship Model (ER Model)  
 
-### 2.2. Entity Sets
+three basic concepts:  
 
-### 2.3. Attributes
+1. Entity Set  
+2. Relationship Set  
+3. Attributes  
 
-#### 2.3.1. Types
+### 2.1. Entity Sets
 
-### 2.4. Relationship Sets
+**Entity**  
 
-#### 2.4.1. With Attributes
+**Entity Set**  
 
-#### 2.4.2. Degree of a Relationship Set
+
+### 2.2. Attributes
+
+#### 2.2.1. Types
+
+### 2.3. Relationship Sets
+
+#### 2.3.1. With Attributes
+
+#### 2.3.2. Degree of a Relationship Set
 
 ## 3. Constraints
 
@@ -50,9 +74,9 @@
 - Keys
 - Participation Constraints
 
-### Keys
+### 3.1. Keys
 
-### Keys of Relationship Sets
+### 3.2. Keys of Relationship Sets
 
 ## 4. E-R Diagram
 
