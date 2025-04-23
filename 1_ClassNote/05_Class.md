@@ -27,10 +27,9 @@
     - [4.2. Attributes](#42-attributes)
         - [4.2.1. An Alternative Representation](#421-an-alternative-representation)
     - [4.3. Cardinality Constraints](#43-cardinality-constraints)
-        - [4.3.1. Alternative Notation](#431-alternative-notation)
     - [4.4. Participation Notations](#44-participation-notations)
+    - [4.3.1. Complicate Notation for Cardinality and Participation Constraints](#431-complicate-notation-for-cardinality-and-participation-constraints)
 - [5. Design Issues](#5-design-issues)
-    - [5.1. Basic](#51-basic)
 
 ---
 
@@ -253,10 +252,37 @@ use ellipses to denote attributes
 
 ### 4.3. Cardinality Constraints
 
-#### 4.3.1. Alternative Notation
+use arrow to denote the side pointing to can participate in the relationship at most 1 time  
+no arrow means no constraint  
 
 ### 4.4. Participation Notations
 
+single line to denote partial participation  
+double line to denote total participation  
+
+### 4.3.1. Complicate Notation for Cardinality and Participation Constraints
+
+use `l..h` to denote the specific limitation of the times each entity can participate in the relationship  
+`l` means lower, the minimum number of entities in the relationship  
+`h` means higher, the maximum number of entities in the relationship  
+
+`*` is used to denote no limitation for maximum  
+*`0` of `l` can denote for no limitation of minimum(any value between 0 and maximum)*  
+
+*easy to understand, this can not only represent the cardinality constraints*  
+*but also the participation constraints*  
+
 ## 5. Design Issues
 
-### 5.1. Basic
+**Basic Issues:**  
+
+- entity sets vs. attributes  
+- entity sets vs. relationship sets  
+- binary relationship vs. non-binary relationship sets  
+- placement of relationship attributes  
+
+**Common Mistakes:**  
+
+- use primary key of an entity set as an attribute of another entity set  
+- designate primary-key attributes of related entity sets as attributes of the relationship set  
+- use a relationship with a single-valued attribute in a situation that requires a multivalued attribute  
