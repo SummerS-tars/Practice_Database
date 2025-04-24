@@ -2,7 +2,7 @@
 
 ---
 
-- [1. Weak Entity Sets](#1-weak-entity-sets)
+- [1. Weak Entity Sets(弱实体集)](#1-weak-entity-sets弱实体集)
 - [2. Extended E-R Features](#2-extended-e-r-features)
 - [3. Reduction to Relation Schemas](#3-reduction-to-relation-schemas)
 - [4. UML](#4-uml)
@@ -10,7 +10,9 @@
 
 ---
 
-## 1. Weak Entity Sets
+## 1. Weak Entity Sets(弱实体集)
+
+
 
 ## 2. Extended E-R Features
 

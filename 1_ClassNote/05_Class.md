@@ -193,7 +193,7 @@ the cardinality of a specific relationship set is depend on the situation of the
 
 #### 3.2.1. Keys of Entity Sets
 
-just the keys we mentioned before  
+just the keys we mentioned before in chapter about relation schema  
 
 - **super key**  
 - **candidate key**  
@@ -202,6 +202,8 @@ just the keys we mentioned before
 #### 3.2.2. Keys of Relationship Sets
 
 A similar mechanism to distinguish among relationships  
+
+
 
 ### 3.3. Participation Constraints
 
