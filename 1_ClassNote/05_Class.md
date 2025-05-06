@@ -28,7 +28,7 @@
         - [4.2.1. An Alternative Representation](#421-an-alternative-representation)
     - [4.3. Cardinality Constraints](#43-cardinality-constraints)
     - [4.4. Participation Notations](#44-participation-notations)
-    - [4.3.1. Complicate Notation for Cardinality and Participation Constraints](#431-complicate-notation-for-cardinality-and-participation-constraints)
+    - [4.5. Complicate Notation for Cardinality and Participation Constraints](#45-complicate-notation-for-cardinality-and-participation-constraints)
 - [5. Design Issues](#5-design-issues)
 
 ---
@@ -262,7 +262,7 @@ no arrow means no constraint
 single line to denote partial participation  
 double line to denote total participation  
 
-### 4.3.1. Complicate Notation for Cardinality and Participation Constraints
+### 4.5. Complicate Notation for Cardinality and Participation Constraints
 
 use `l..h` to denote the specific limitation of the times each entity can participate in the relationship  
 `l` means lower, the minimum number of entities in the relationship  
@@ -288,3 +288,5 @@ use `l..h` to denote the specific limitation of the times each entity can partic
 - use primary key of an entity set as an attribute of another entity set  
 - designate primary-key attributes of related entity sets as attributes of the relationship set  
 - use a relationship with a single-valued attribute in a situation that requires a multivalued attribute  
+
+details in Chinese ver book p200  
