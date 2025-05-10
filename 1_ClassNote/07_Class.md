@@ -32,7 +32,7 @@ two main design alternatives:
 
 Usually comes from the situation we want to combination of two or more relations  
 This may cause data redundancy  
-
+but it is easier to retrieve information  
 
 ### Smaller Schemas
 
@@ -55,7 +55,14 @@ our theory is based on:
 
 ## 2. Functional Dependency and Normal Forms
 
+normal forms are just what it sounds like  
+they are some patterns for relation schema design  
+
+here are several common normal forms:  
+
 ### 2.1. BCNF
+
+
 
 ### 2.2. 3NF
 
