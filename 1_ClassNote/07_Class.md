@@ -16,9 +16,13 @@
 - [3. Normal Forms(范式)](#3-normal-forms范式)
     - [3.1. BCNF](#31-bcnf)
         - [Definition](#definition)
+        - [Decomposing a Schema into BCNF](#decomposing-a-schema-into-bcnf)
     - [3.2. 3NF](#32-3nf)
+    - [Comparison between BCNF and 3NF](#comparison-between-bcnf-and-3nf)
     - [3.3. 1NF](#33-1nf)
 - [4. Functional Dependency Theory](#4-functional-dependency-theory)
+    - [Closure of Functional Dependency Set](#closure-of-functional-dependency-set)
+    - [Closure of Attribute Set](#closure-of-attribute-set)
 - [5. Algorithms for Decomposition](#5-algorithms-for-decomposition)
 
 ---
@@ -211,12 +215,123 @@ it eliminates all the redundancy that can be found basic on functional dependenc
 
 #### Definition
 
+if we say a relation schema $R$ related to $F$(a set of functional dependencies)  
+is in BCNF  
+we means:  
 
+at least one of the following conditions is satisfied:  
+for every functional dependency $\alpha \rightarrow \beta$ in $F^+$,
+
+1. $\alpha \rightarrow \beta$ is trivial  
+2. $\alpha$ is a superkey of $R$  
+
+and a relational database is in BCNF  
+when all the relation schemas are in BCNF  
+
+#### Decomposing a Schema into BCNF
+
+if we want to do the thing mentioned above,  
+clearly we are in the situation where the schema is not in BCNF  
+
+in other words, we give as easy example:  
+suppose it has a functional dependency $\alpha \rightarrow \beta$  
+which isn't trivial  
+and $\alpha$ is not a superkey of $R$  
+
+we have said above that we should just do lossless decomposition  
+to do this,  
+we decompose $R$ into:  
+$$
+(\alpha \cup \beta) \\
+(R - (\beta - \alpha))
+$$
+
+we can easily prove that this decomposition satisfies the lossless condition  
+and the new relation schemas are in BCNF
 
 ### 3.2. 3NF
+
+compared to BCNF, whose all non-trivial functional dependencies' left attributes must be superkeys  
+3NF is more relaxed  
+
+it allows one more condition:  
+
+- every attribute A in $\beta - \alpha$ is included in a candidate key of $R$  
+
+*attention the candidate key may not be the same one*  
+
+### Comparison between BCNF and 3NF
+
+we can easily find 3NF is the super set of BCNF  
+*that is to say, every BCNF schema is also 3NF*  
+so 3NF is a more(or least) relaxed edition of BCNF  
+
+3NF advantages:  
+when we decompose a schema into 3NF  
+we can definitely keep lossless and **dependency preserving**(保持依赖)
+
+disadvantages:  
+we may have to use nulls to represent some relation between attributes  
+and may cause some redundancy  
+
+back to our goals of the design:  
+
+1. BCNF  
+2. lossless  
+3. dependency preserving  
+
+they can't be always satisfied  
+so we have to choose between BCNF and 3NF  
 
 ### 3.3. 1NF
 
 ## 4. Functional Dependency Theory
+
+### Closure of Functional Dependency Set
+
+we have mentioned what is the closure $F^+$ of functional dependency set $F$  
+basically, we can use the definition to find the closure  
+but it of course not efficient  
+
+so we have **Armstrong's Axioms**(阿姆斯特朗公理):  
+
+- **reflexivity rule**(自反律)  
+    if $\beta \subseteq \alpha$  
+    then $\alpha \rightarrow \beta$  
+- **augmentation rule**(增补律)  
+    if $\alpha \rightarrow \beta$  
+    then $\alpha \gamma \rightarrow \beta \gamma$  
+- **transitivity rule**(传递律)  
+    if $\alpha \rightarrow \beta$ and $\beta \rightarrow \gamma$  
+    then $\alpha \rightarrow \gamma$  
+
+we can iteratively apply these rules to find the closure
+but it's still not efficient enough  
+
+so we have some more rules(can be derived from Armstrong's Axioms):  
+
+- **union rule**(合并律)  
+    if $\alpha \rightarrow \beta$ and $\alpha \rightarrow \gamma$  
+    then $\alpha \rightarrow \beta \cup \gamma$
+- **decomposition rule**(分解律)
+    if $\alpha \rightarrow \beta \cup \gamma$  
+    then $\alpha \rightarrow \beta$ and $\alpha \rightarrow \gamma$
+- **pseudotransitivity rule**(伪传递律)
+    if $\alpha \rightarrow \beta$ and $\beta \cup \gamma \rightarrow \delta$  
+    then $\alpha \cup \gamma \rightarrow \delta$
+
+### Closure of Attribute Set
+
+at first, we should know a concept: **functionally determine**(函数决定)  
+if $\alpha \rightarrow B$ we say $B$ is functionally determined by $\alpha$  
+
+we should know this,  
+because if we want to prove that $\alpha$ is a superkey of $R$  
+we have to find the $B$ that is functionally determined by $\alpha$  
+
+we can of course use $F^+$ to find the closure of attribute set  
+but it is not efficient as it may be very large  
+another way is to find the closure $\alpha^+$ of attribute set $\alpha$  
+witch is the set of all attributes that are functionally determined by $\alpha$  
 
 ## 5. Algorithms for Decomposition
