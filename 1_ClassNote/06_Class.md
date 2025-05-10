@@ -24,7 +24,6 @@
     - [Aggregation](#aggregation)
     - [Issues](#issues)
 - [4. UML](#4-uml)
-- [5. ER Modeling Process](#5-er-modeling-process)
 
 ---
 
@@ -206,4 +205,15 @@ mentioned last part
 
 ## 4. UML
 
-## 5. ER Modeling Process
+UML(Unified Modeling Language, 统一建模语言)  
+
+components:  
+
+1. class diagram(类图)  
+    similar to E-R diagram  
+2. use case diagram(用例图)  
+    represent how user and system interact  
+    especially about the sequence acted by user  
+3. activity diagram(活动图)  
+    the task flow of the parts of the system  
+4. implementation diagram(实现图)  
