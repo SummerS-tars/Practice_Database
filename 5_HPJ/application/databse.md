@@ -322,4 +322,391 @@ CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
     FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
     CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
 );
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
+    FOREIGN KEY (candidate_answer_id) REFERENCES candidate_answers(id) ON DELETE CASCADE
+);
+
+-- -----------------------------------------------------
+-- 评估部分 (Evaluation Part)
+-- -----------------------------------------------------
+CREATE TABLE evaluation_tags ( -- 代表一次LLM评估的配置或批次
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    data_set_version VARCHAR(50),
+    evaluation_time INT, -- 指第几次测试，根据E-R描述变化
+    model VARCHAR(100) NOT NULL, -- 用于测试回答问题的模型
+    FOREIGN KEY (data_set_version) REFERENCES version(version) ON DELETE SET NULL
+);
+
+CREATE TABLE evaluation_results ( -- 存储LLM对特定问题的具体回答
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Renamed from result_id in E-R to be consistent
+    evaluation_tag_id INT NOT NULL, -- 外键，关联到评估批次
+    std_question_id INT NOT NULL,   -- 外键，关联到标准问题
+    content TEXT,                   -- LLM生成的答案内容
+    status ENUM('PENDING', 'ANALYZED', 'OMITTED') DEFAULT 'PENDING',
+    has_analysis BOOLEAN DEFAULT FALSE, -- 标识是否有对应的分析结果
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (std_question_id) REFERENCES std_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE analysis_tags ( -- 代表一次评估结果分析的配置或批次
+    analysis_tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    evaluation_tag_id INT NOT NULL, -- 关联到原始的评估批次
+    analysis_time INT, -- 对该数据集版本的测试结果的分析次数（指第几次）
+    model VARCHAR(100) NOT NULL, -- 用于分析测试结果的模型
+    FOREIGN KEY (evaluation_tag_id) REFERENCES evaluation_tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE evaluation_analysis ( -- 存储对 evaluation_results 的分析
+    id INT PRIMARY KEY AUTO_INCREMENT, -- Using own PK for clarity
+    evaluation_result_id INT NOT NULL, -- 外键，关联到具体的LLM回答
+    analysis_tag_id INT NOT NULL,      -- 外键，关联到分析批次
+    score INT, -- 回答测试结果得分（0-10分中的一个整数）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evaluation_result_id) REFERENCES evaluation_results(id) ON DELETE CASCADE,
+    FOREIGN KEY (analysis_tag_id) REFERENCES analysis_tags(analysis_tag_id) ON DELETE CASCADE,
+    CONSTRAINT chk_analysis_score CHECK (score >= 0 AND score <= 10) -- 约束score在0到10之间
+);
 ```
