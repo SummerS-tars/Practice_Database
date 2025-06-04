@@ -1,4 +1,4 @@
--- Active: 1744736411290@@_@3306@mysql
+-- Active: 1744736411290@@_@3306@llm_evaluate
 CREATE DATABASE IF NOT EXISTS llm_evaluate;
 USE llm_evaluate;
 
