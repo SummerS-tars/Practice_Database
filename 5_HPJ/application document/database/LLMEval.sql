@@ -40,10 +40,12 @@ CREATE TABLE IF NOT EXISTS tags (
 
 CREATE TABLE IF NOT EXISTS std_questions (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    original_raw_question_id INT NOT NULL, -- 外键，关联到原始问题 (many-to-one, std_questions is total participant)
     type ENUM('OBJECTIVE', 'SUBJECTIVE') NOT NULL,
     content TEXT NOT NULL,
     status ENUM('WAITING_ANSWERS', 'ANSWERED') DEFAULT 'WAITING_ANSWERS',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (original_raw_question_id) REFERENCES raw_questions(id) ON DELETE RESTRICT
 );
 
 -- M:N Relationship between std_questions and version

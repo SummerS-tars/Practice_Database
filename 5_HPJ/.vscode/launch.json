@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LlmEvaluateBackendApplication<llm-evaluate-backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "top.thesumst.llm_evaluate_backend.LlmEvaluateBackendApplication",
+            "projectName": "llm-evaluate-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

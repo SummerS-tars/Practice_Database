@@ -41,12 +41,13 @@ ES
 
 1. std_questions
     1. **std_question_id**
-    2. type  
+    2. original_raw_question_id -- 外键，关联到原始问题
+    3. type  
         OBJECTIVE or SUBJECTIVE  
-    3. content  
-    4. status  
+    4. content  
+    5. status  
         WAITING_ANSWERS or ANSWERED  
-    5. created_at
+    6. created_at
 2. std_answers
     1. **std_answers_id**  
     2. type  
@@ -71,17 +72,23 @@ ES
 
 RS
 
-1. version_is between std_questions and version  
+1. std_originated_from_raw between std_questions and raw_questions
+    一个标准问题必须来源于一个原始问题，但一个原始问题可以被转换为多个标准问题
+    1. std_questions AP many
+    2. raw_questions PP one
+    3. std_questions(original_raw_question_id) referencing raw_questions(id)
+
+2. version_is between std_questions and version  
     一个标准问题可以存在于多个版本  
     1. std_questions AP many  
     2. version PP many  
 
-2. tag_is between std_questions and tags
+3. tag_is between std_questions and tags
     一个标准问题可以有多个标签  
     1. std_questions PP many  
     2. tags PP many  
 
-3. std_q_and_a between std_questions and std_answers  
+4. std_q_and_a between std_questions and std_answers  
     1. std_questions PP one  
     2. std_answers AP many  
 
@@ -203,10 +210,12 @@ CREATE TABLE tags (
 
 CREATE TABLE std_questions (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    original_raw_question_id INT NOT NULL, -- 外键，关联到原始问题 (many-to-one, std_questions is total participant)
     type ENUM('OBJECTIVE', 'SUBJECTIVE') NOT NULL,
     content TEXT NOT NULL,
     status ENUM('WAITING_ANSWERS', 'ANSWERED') DEFAULT 'WAITING_ANSWERS',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (original_raw_question_id) REFERENCES raw_questions(id) ON DELETE RESTRICT
 );
 
 -- M:N Relationship between std_questions and version
